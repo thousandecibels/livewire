@@ -38,4 +38,15 @@ class Team extends JetstreamTeam
         'updated' => TeamUpdated::class,
         'deleted' => TeamDeleted::class,
     ];
+
+    /**
+     * Team Cards
+     *
+     * Get the Cards belonging to the Team
+     *
+     **/
+    public function cards()
+    {
+        return $this->hasMany(Card::class);
+    }
 }

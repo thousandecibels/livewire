@@ -15,6 +15,17 @@ class Card extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'card_type', 'description', 'password'
+        'team_id', 'name', 'card_type', 'description', 'password'
     ];
+
+    /**
+     * Card Team
+     *
+     * Get the Team that owns the Card.
+     *
+     **/
+    public function team()
+    {
+        return $this->belongsTo(Team::class);
+    }
 }

@@ -1,8 +1,10 @@
 <div>
     <div class="flex items-center justify-end px-4 py-3 text-right sm:px-6">
+        @can('create', \App\Models\Card::class)
         <x-jet-button wire:click="createCardForm">
             {{ __('Create') }}
         </x-jet-button>
+        @endcan
     </div>
     @if (session()->has('message'))
     <div class="bg-indigo-600 mt-4 rounded m-8">
@@ -93,22 +95,32 @@
                                     {{ $card->password }}
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                    @can('view', $card)
                                     <x-jet-button
                                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-yellow-600 hover:bg-yellow-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500">
                                         {{ __('View') }}
                                     </x-jet-button>
-                                    <x-jet-button
+                                    @endcan
+                                    @can('update', $card)
+                                    <x-jet-button wire:click="updateCardForm({{ $card->id }})"
                                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                                         {{ __('Edit') }}
                                     </x-jet-button>
+                                    @endcan
+                                    @can('delete', $card)
                                     <x-jet-button
                                         class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                                         {{ __('Delete') }}
                                     </x-jet-button>
+                                    @endcan
                                 </td>
                             </tr>
                             @empty
-
+                            <tr>
+                                <td colspan="5">
+                                    <p class="text-center mt-4">No cards available</p>
+                                </td>
+                            </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -168,10 +180,15 @@
             <x-jet-secondary-button wire:click="$toggle('loadModal')" wire:loading.attr="disabled">
                 {{ __('Nevermind') }}
             </x-jet-secondary-button>
-
+            @if (!$modelId)
             <x-jet-button class="ml-2" wire:click="save" wire:loading.attr="disabled">
                 Save
             </x-jet-button>
+            @else
+            <x-jet-button class="ml-2" wire:click="update" wire:loading.attr="disabled">
+                Update
+            </x-jet-button>
+            @endif
         </x-slot>
-        </x-jet-confirmation-modal>
+    </x-jet-dialog-modal>
 </div>
